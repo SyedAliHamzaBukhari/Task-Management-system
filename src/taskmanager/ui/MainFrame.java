@@ -34,6 +34,12 @@ public class MainFrame extends JFrame {
             ACCENT = new Color(0x2383E2), SELECT = new Color(0x26354A);
     private static final String FONT = "Segoe UI";
 
+    private static JButton emptyButton() {
+        JButton b = new JButton();
+        b.setPreferredSize(new Dimension(0, 0));
+        return b;
+    }
+
     static {
         try { UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName()); }
         catch (Exception ignored) { }
@@ -201,8 +207,8 @@ public class MainFrame extends JFrame {
                 thumbColor = LINE;
                 trackColor = BG;
             }
-            @Override protected JButton createDecreaseButton(int o) { return zeroButton(); }
-            @Override protected JButton createIncreaseButton(int o) { return zeroButton(); }
+            @Override protected JButton createDecreaseButton(int o) { return emptyButton(); }
+            @Override protected JButton createIncreaseButton(int o) { return emptyButton(); }
         });
         return sp;
     }

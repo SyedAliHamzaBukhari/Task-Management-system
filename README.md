@@ -33,3 +33,6 @@ report/                  OEL report (PDF)
 2. Open the folder in IntelliJ IDEA (JDK 17+).
 3. Run `src/taskmanager/Main.java`.
 
+## Documentation
+- Javadoc: open `docs/index.html`
+- Report: `report/OEL_Report.pdf`
