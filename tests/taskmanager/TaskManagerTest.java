@@ -1,5 +1,6 @@
 package taskmanager;
 
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import taskmanager.model.Status;
@@ -84,5 +85,21 @@ class TaskManagerTest {
             assertTrue(manager.setStatus(id, s));
             assertEquals(s, manager.getAll().get(0).getStatus());
         }
+    }
+
+    /** Tasks survive a restart, including commas and quotes. */
+    @Test
+    void persistsToCsv(@TempDir java.nio.file.Path dir) {
+        var file = dir.resolve("tasks.csv");
+        var first = new TaskManager(file);
+        int id = first.add("Say \"hi\", ok", "a, b").getId();
+        first.setStatus(id, Status.COMPLETED);
+
+        var second = new TaskManager(file);
+        var t = second.getAll().get(0);
+        assertEquals("Say \"hi\", ok", t.getTitle());
+        assertEquals("a, b", t.getDescription());
+        assertEquals(Status.COMPLETED, t.getStatus());
+        assertEquals(2, second.add("Next", "").getId());
     }
 }
