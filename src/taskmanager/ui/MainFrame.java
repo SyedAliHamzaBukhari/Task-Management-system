@@ -20,6 +20,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.List;
 
+import java.nio.file.Path;
+
 /**
  * Main window of the Task Management System (Swing GUI, Notion-style dark theme).
  *
@@ -44,7 +46,7 @@ public class MainFrame extends JFrame {
         UIManager.put("Button.select", LINE);
     }
 
-    private final TaskManager manager = new TaskManager();
+    private final TaskManager manager = new TaskManager(Path.of("tasks.csv"));
     private final DefaultTableModel model =
             new DefaultTableModel(new String[]{"ID", "Title", "Description", "Status"}, 0) {
                 @Override public boolean isCellEditable(int row, int col) { return false; }
@@ -261,11 +263,7 @@ public class MainFrame extends JFrame {
         });
     }
 
-    private static JButton zeroButton() {
-        JButton b = new JButton();
-        b.setPreferredSize(new Dimension(0, 0));
-        return b;
-    }
+
 
     private static Color lighten(Color c) {
         return new Color(Math.min(255, c.getRed() + 22), Math.min(255, c.getGreen() + 22),
@@ -297,7 +295,7 @@ public class MainFrame extends JFrame {
         b.addActionListener(e -> {
             try {
                 action.run();
-            } catch (IllegalArgumentException ex) {
+            } catch (RuntimeException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
             }
         });
